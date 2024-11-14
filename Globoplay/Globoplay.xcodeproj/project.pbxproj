@@ -18,6 +18,8 @@
 		50424CD02CE433570008A060 /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50424CCF2CE433570008A060 /* FavoritesViewModel.swift */; };
 		50424CD22CE539190008A060 /* HomeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50424CD12CE539190008A060 /* HomeResponse.swift */; };
 		50424CD52CE5581C0008A060 /* MovieCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50424CD42CE5581C0008A060 /* MovieCard.swift */; };
+		5087F3A12CE577D800D7769E /* FavoritesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5087F3A02CE577D800D7769E /* FavoritesViewModelTests.swift */; };
+		5087F3A32CE5784100D7769E /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5087F3A22CE5784100D7769E /* HomeViewModelTests.swift */; };
 		50A093BA2CE3ADA1008BA132 /* GloboplayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A093B92CE3ADA1008BA132 /* GloboplayApp.swift */; };
 		50A093BE2CE3ADA2008BA132 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50A093BD2CE3ADA2008BA132 /* Assets.xcassets */; };
 		50A093C22CE3ADA2008BA132 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50A093C12CE3ADA2008BA132 /* Preview Assets.xcassets */; };
@@ -56,6 +58,8 @@
 		50424CCF2CE433570008A060 /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
 		50424CD12CE539190008A060 /* HomeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeResponse.swift; sourceTree = "<group>"; };
 		50424CD42CE5581C0008A060 /* MovieCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCard.swift; sourceTree = "<group>"; };
+		5087F3A02CE577D800D7769E /* FavoritesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModelTests.swift; sourceTree = "<group>"; };
+		5087F3A22CE5784100D7769E /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		50A093B62CE3ADA1008BA132 /* Globoplay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Globoplay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50A093B92CE3ADA1008BA132 /* GloboplayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GloboplayApp.swift; sourceTree = "<group>"; };
 		50A093BD2CE3ADA2008BA132 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -253,6 +257,8 @@
 			isa = PBXGroup;
 			children = (
 				50A093CB2CE3ADA2008BA132 /* GloboplayTests.swift */,
+				5087F3A02CE577D800D7769E /* FavoritesViewModelTests.swift */,
+				5087F3A22CE5784100D7769E /* HomeViewModelTests.swift */,
 			);
 			path = GloboplayTests;
 			sourceTree = "<group>";
@@ -415,7 +421,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5087F3A12CE577D800D7769E /* FavoritesViewModelTests.swift in Sources */,
 				50A093CC2CE3ADA2008BA132 /* GloboplayTests.swift in Sources */,
+				5087F3A32CE5784100D7769E /* HomeViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
