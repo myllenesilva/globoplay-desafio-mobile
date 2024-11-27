@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MovieDetailView: View {
-    
+    @EnvironmentObject var favoritesViewModel: FavoritesViewModel
+    @Environment(\.presentationMode) var presentationMode
     let movie: MovieModel
     
     var body: some View {
@@ -34,7 +35,7 @@ struct MovieDetailView: View {
                         AsyncImage(url: movie.backdropURL) { image in
                             image
                                 .resizable()
-                                .frame(width: 170, height: 225) // Tamanho da imagem principal
+                                .frame(width: 170, height: 225)
                                 .shadow(radius: 10)
                         } placeholder: {
                             ProgressView()
@@ -67,21 +68,28 @@ struct MovieDetailView: View {
                                 Text("Play")
                             }
                             .padding()
+                            .frame(width: 180)
                             .background(Color.white)
                             .foregroundColor(.black)
                             .cornerRadius(8)
-                        }
-                        
+                        } 
                         Button(action: {
-                            // Ação para "Minha lista"
+                            if favoritesViewModel.isFavorite(movie: movie) {
+                                favoritesViewModel.removeFavorite(movie: movie)
+                            } else {
+                                favoritesViewModel.addFavorite(movie: movie)
+                            }
+                            
                         }) {
                             HStack {
-                                Image(systemName: "star.fill")
-                                Text("My list")
+                                Image(systemName: favoritesViewModel.isFavorite(movie: movie) ? "checkmark" : "star.fill")
+                                Text(favoritesViewModel.isFavorite(movie: movie) ? "Added" : "My list")
                             }
                             .padding()
-                            .background(Color.gray.opacity(0.3))
+                            .frame(width: 180)
+                            .background(Color.black)
                             .foregroundColor(.white)
+                            .border(Color.tileColor, width: 3)
                             .cornerRadius(8)
                         }
                     }
@@ -94,7 +102,7 @@ struct MovieDetailView: View {
                             Spacer()
                         }
                         
-                        Text(movie.overview+movie.overview)
+                        Text(movie.overview)
                             .foregroundColor(Color.detailtColor)
                             .padding(.horizontal)
                             .fixedSize(horizontal: false, vertical: true)
@@ -109,7 +117,18 @@ struct MovieDetailView: View {
                 }
                 .padding(.top, 16)
             }
-            .toolbar(.hidden, for: .tabBar)
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                        .font(.title2)
+                }
+            }
         }
     }
 }

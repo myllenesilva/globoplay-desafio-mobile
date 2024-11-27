@@ -9,114 +9,96 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject var viewModel = HomeViewModel()
+    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     @State var searchText: String = ""
+    @State private var isLoading = true
+    @State private var isTabBarHidden: Visibility = .visible
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                if searchText.isEmpty {
-                    if viewModel.movies.isEmpty {
-                        Text("No Results")
-                    } else {
-                        VStack {
-                            HStack {
-                                Text("Filmes")
-                                    .font(.title)
-                                    .foregroundColor(.white)
-                                    .fontWeight(.heavy)
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack {
-                                    ForEach(viewModel.movies) { movie in
-                                        NavigationLink {
-                                            MovieDetailView(movie: movie)
-                                        } label: {
-                                            MovieCard(movieItem: movie)
+        ZStack {
+            Color.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            if isLoading {
+                ProgressView("Loading...")
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(2)
+                    .padding(50)
+                    .foregroundColor(.white)
+            } else {
+                VStack {
+                    HStack {
+                        Text("Movies")
+                            .font(.title)
+                            .foregroundColor(.white)
+                            .fontWeight(.heavy)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    
+                    if searchText.isEmpty {
+                        if homeViewModel.movies.isEmpty {
+                            Text("No Results")
+                                .foregroundColor(.white)
+                        } else {
+                            VStack {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack {
+                                        ForEach(homeViewModel.movies) { movie in
+                                            NavigationLink {
+                                                MovieDetailView(movie: movie)
+                                                    .environmentObject(favoritesViewModel)
+                                                    .onAppear {
+                                                        isTabBarHidden = .hidden
+                                                    }
+                                            } label: {
+                                                MovieCard(movieItem: movie)
+                                            }
                                         }
                                     }
+                                    .padding(.horizontal)
                                 }
-                                .padding(.horizontal)
                             }
-                            Spacer()
                         }
-                    }
-                } else {
-                    LazyVStack {
-                        ForEach(viewModel.searchResults) { movie in
-                            HStack {
-                                AsyncImage(url: movie.backdropURL) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 80, height: 120)
-                                } placeholder: {
-                                    ProgressView()
-                                        .frame(width: 80, height: 120)
+                    } else {
+                        List {
+                            ForEach(homeViewModel.searchResults) { movie in
+                                NavigationLink {
+                                    MovieDetailView(movie: movie)
+                                        .environmentObject(favoritesViewModel)
+                                } label: {
+                                    HStack {
+                                        Text(movie.title)
+                                            .font(.headline)
+                                            .foregroundColor(.white)
+                                            .foregroundColor(Color.backgroundColor)
+                                        Spacer()
+                                        Image(systemName: favoritesViewModel.isFavorite(movie: movie) ? "star.fill" : "star")
+                                    }
                                 }
-                                .clipped()
-                                .cornerRadius(10)
-                                
-                                VStack(alignment: .leading) {
-                                    Text(movie.title)
-                                        .foregroundColor(.white)
-                                        .font(.headline)
-                                }
-                                Spacer()
                             }
-                            .padding()
-                            .background(.black)
-                            .cornerRadius(20)
-                            .padding()
                         }
+                        .listStyle(PlainListStyle())
+                        .background(Color.backgroundColor)
                     }
+                    Spacer()
                 }
+                .padding(.top, 20)
             }
-            .background(Color.backgroundColor)
         }
         .searchable(text: $searchText)
         .onChange(of: searchText) { _, newValue in
             if newValue.count > 2 {
-                viewModel.fetchSearch(title: newValue)
+                homeViewModel.fetchSearch(title: newValue)
             }
         }
         .onAppear {
-            viewModel.fetchMovies()
+            homeViewModel.fetchMovies() { _ in
+                self.isLoading = false
+            }
+            isTabBarHidden = .visible
         }
+        .toolbar(isTabBarHidden, for: .tabBar)
     }
 }
-
-#Preview {
-    HomeView()
-}
-
-struct MovieCard: View {
-    let movieItem: MovieModel
-    
-    var body: some View {
-        ZStack(alignment: .bottom) {
-            AsyncImage(url: movieItem.backdropURL) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 170, height: 200)
-            } placeholder: {
-                Rectangle().fill(.gray)
-                    .frame(width: 170, height: 200)
-            }
-            HStack {
-                Text(movieItem.title)
-                    .foregroundStyle(.white)
-                    .fontWeight(.heavy)
-            }
-            .padding()
-            .frame(width: 170)
-            .background(.black)
-        }
-        .cornerRadius(10)
-        .frame(width: 170, height: 500)
-    }
-}
-

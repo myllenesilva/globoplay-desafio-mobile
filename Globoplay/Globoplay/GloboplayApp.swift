@@ -16,4 +16,3 @@ struct GloboplayApp: App {
         }
     }
 }
-
